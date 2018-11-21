@@ -3,6 +3,7 @@ import subprocess
 import os
 import re
 import pickle
+
 import filetypes
 
 pkl_file = open('API.pkl', 'rb')
@@ -72,7 +73,10 @@ def get_filename(project_root, id, picOps, audOps, vidOps, cusOps):
     output = subprocess.check_output("git diff " + id, shell=True)
     os.chdir(cwd)
 
-    output = str(output, "utf-8")
+    try:
+        output = str(output, "utf-8")
+    except(UnicodeDecodeError):
+        return []
     """
     lines = output.splitlines()[:-2]
     files = []
@@ -236,6 +240,8 @@ def get_change(project_root, commit_id, file_name):
     method_of_class: method对应的类名
     import_list: import的类名
     """
+    if class_lines == []:
+        return [], [], [], {}
     method_of_class = []
     len_of_class = len(class_lines)
     for i in range(len(method_lines)):

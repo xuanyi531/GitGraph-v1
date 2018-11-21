@@ -3,9 +3,9 @@ import re
 import pickle
 
 def extract_API():
-    with open("current.txt") as f:
+    with open("./pics/current.txt") as f:
         file_content = f.read().splitlines()
-    with open("system-current.txt") as f:
+    with open("./pics/system-current.txt") as f:
         file_content2 = f.read().splitlines()
     result = {}
     packagename = ""
