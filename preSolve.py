@@ -173,7 +173,7 @@ def digui(classname, x):
     global classdic
     if x in classdic[classname]['Method']:
         return classname + "." + x
-    elif 'SuperClass' in classdic[classname]:
+    elif 'SuperClass' in classdic[classname] and classdic[classname]['SuperClass'] in classdic:
         return digui(classdic[classname]['SuperClass'], x)
     else:
         return None
