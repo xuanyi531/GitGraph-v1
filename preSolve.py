@@ -70,12 +70,16 @@ def get_filename(project_root, id, picOps, audOps, vidOps, cusOps):
     cwd = os.getcwd()
     os.chdir(project_root)
     # output = subprocess.check_output("git diff " + id + " --stat", shell=True)
-    output = subprocess.check_output("git diff " + id, shell=True)
-    os.chdir(cwd)
+    try:
+        output = subprocess.check_output("git diff " + id, shell=True)
+        os.chdir(cwd)
+    except:
+        os.chdir(cwd)
+        return []
 
     try:
         output = str(output, "utf-8")
-    except(UnicodeDecodeError):
+    except:
         return []
     """
     lines = output.splitlines()[:-2]
@@ -152,8 +156,7 @@ def get_change_of_API(import_list, line):
     pattern = re.compile(r"(\w+(\.\w+)*)\([A-Za-z0-9_.]*( +, +[A-Za-z0-9_.]+)*\)")
     apis = re.findall(pattern, line)
     apis = [x[0] for x in apis]
-    apis = [x for x in apis if x not in ["if", "for", "while", "super", "Log.d", "getResources",
-                                         "getWidth", "getHeight","setHeight", "setWidth"]]
+    apis = [x for x in apis if x not in ["if", "for", "while", "super"]]
     for aclass in import_list:
         if aclass in classdic:
             method_of_class = classdic[aclass]['Method']
